@@ -65,6 +65,12 @@ function fecharModalSenha() {
 }
 
 // =========================
+//   FECHAR MODAL SENHA (CORREÇÃO)
+// =========================
+
+fecharSenha.addEventListener("click", fecharModalSenha);
+
+// =========================
 //   VALIDAÇÃO DE SENHA
 // =========================
 
