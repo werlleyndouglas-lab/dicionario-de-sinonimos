@@ -1,0 +1,302 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #071326, #0a1a33);
+    color: #e6ecf5;
+    transition: background 0.4s, color 0.4s;
+}
+
+/* Oculta input de importação */
+.hidden-input {
+    display: none;
+}
+
+/* Oculta botão Resetar Senha */
+.hidden-reset {
+    display: none;
+}
+
+/* Acessibilidade: label invisível mas lido por leitores de tela */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* =========================
+   MODO ESCURO REAL
+========================= */
+body.dark {
+    background: #0b0b0b;
+    color: #e0e0e0;
+}
+
+body.dark header {
+    background: #111;
+    color: #eee;
+}
+
+body.dark .card {
+    background: #1a1a1a;
+}
+
+body.dark .menu-flex {
+    background: #111;
+}
+
+body.dark .menu-flex button {
+    background: #222;
+    color: #ddd;
+}
+
+body.dark .menu-flex button:hover {
+    background: #333;
+}
+
+body.dark input {
+    background: #1c1c1c;
+    border-color: #444;
+    color: #eee;
+}
+
+body.dark input:focus {
+    border-color: #888;
+}
+
+body.dark button {
+    background: #222;
+    color: #eee;
+}
+
+body.dark button:hover {
+    background: #333;
+}
+
+body.dark #listaPalavras li {
+    background: #1c1c1c;
+    border-left: 4px solid #666;
+}
+
+body.dark .btn-excluir {
+    color: #aaa;
+}
+
+body.dark .btn-excluir:hover {
+    color: #ff4d4d;
+}
+
+body.dark .btn-excluir:hover::after {
+    color: #ccc;
+}
+
+body.dark .modal-content {
+    background: #1a1a1a;
+    color: #eee;
+}
+
+body.dark .resultado-modal {
+    border-left: 5px solid #888;
+}
+
+body.dark #topo {
+    background: #222;
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+    background: #071326;
+    padding: 25px;
+    text-align: center;
+    color: white;
+}
+
+/* =========================
+   MENU FLEXBOX
+========================= */
+.menu-flex {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px;
+    background: #0d1f3a;
+}
+
+.menu-flex button {
+    background: #1e3f73;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-flex button:hover {
+    background: #29508f;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   CARDS
+========================= */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 30px;
+    justify-content: center;
+}
+
+.card {
+    background: #11284d;
+    padding: 20px;
+    width: 300px;
+    border-radius: 12px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #3b5c8e;
+    background: #0d1f3a;
+    color: white;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1e3f73;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* =========================
+   LISTA DE PALAVRAS
+========================= */
+#listaPalavras {
+    list-style: none;
+    padding: 0;
+}
+
+#listaPalavras li {
+    background: #0d1f3a;
+    padding: 8px 12px;
+    margin: 6px 0;
+    border-radius: 6px;
+    border-left: 4px solid #4a8cff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* BOTÃO X AJUSTADO */
+.btn-excluir {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    width: 22px;
+    text-align: center;
+    margin-left: 12px;
+    position: relative;
+}
+
+.btn-excluir:hover {
+    color: red;
+}
+
+.btn-excluir:hover::after {
+    content: "Excluir";
+    position: absolute;
+    right: 28px;
+    top: 0;
+    color: #ccc;
+    font-size: 12px;
+}
+
+/* =========================
+   MODAIS
+========================= */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #11284d;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.resultado-modal {
+    border-left: 5px solid #4a8cff;
+}
+
+/* MODAIS DE INFORMAÇÃO */
+.info-modal {
+    background: #11284d;
+    border-left: 5px solid #4a8cff;
+}
+
+body.dark .info-modal {
+    background: #1a1a1a;
+    border-left: 5px solid #888;
+}
+
+.info-modal h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.info-modal ul {
+    margin-left: 20px;
+}
+
+.info-modal button {
+    margin-top: 10px;
+}
+
+/* =========================
+   BOTÃO VOLTAR AO TOPO
+========================= */
+#topo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e3f73;
+    padding: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicionário de Sinônimos</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a2e0e6ad65.js" crossorigin="anonymous"></script>
+
+    <!-- SheetJS para importar Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- jsPDF para exportar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1><i class="fa-solid fa-book"></i> Dicionário de Sinônimos</h1>
+</header>
+
+<!-- MENU FLEXBOX CENTRALIZADO -->
+<nav class="menu-flex">
+    <button id="btnExportar"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+    <button id="btnImportar"><i class="fa-solid fa-file-excel"></i> Importar Excel</button>
+    <button id="btnModoEscuro"><i class="fa-solid fa-moon"></i> Modo Escuro</button>
+    <button id="btnRedefinirSenha"><i class="fa-solid fa-key"></i> Redefinir Senha</button>
+</nav>
+
+<main class="container">
+
+    <section class="card">
+        <h2><i class="fa-solid fa-plus"></i> Cadastrar Palavra</h2>
+        <form id="formCadastro">
+            <input type="text" id="palavra" placeholder="Palavra" required>
+            <input type="text" id="definicao" placeholder="Significado" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Sinônimo</h2>
+        <form id="formBusca">
+            <input type="text" id="busca" placeholder="Digite a palavra" required>
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2><i class="fa-solid fa-list"></i> Palavras Cadastradas</h2>
+        <p id="contadorPalavras"></p>
+        <ul id="listaPalavras"></ul>
+    </section>
+
+</main>
+
+<div id="topo"><i class="fa-solid fa-arrow-up"></i></div>
+
+<!-- INPUT IMPORTAÇÃO (SEM INLINE STYLE) -->
+<label for="inputImportar" class="sr-only">Importar arquivo Excel</label>
+<input type="file" id="inputImportar" accept=".xlsx" class="hidden-input">
+
+<!-- MODAL SENHA -->
+<div id="modalSenha" class="modal">
+    <div class="modal-content">
+        <h3>Digite a senha de administrador</h3>
+
+        <label for="inputSenha" class="sr-only">Senha</label>
+        <input type="password" id="inputSenha" placeholder="Senha">
+
+        <button id="confirmarSenha">Confirmar</button>
+
+        <!-- BOTÃO RESETAR SENHA (SEM INLINE STYLE) -->
+        <button id="resetarSenha" class="cancelar hidden-reset">Resetar Senha</button>
+
+        <button class="cancelar fecharSenha">Cancelar</button>
+    </div>
+</div>
+
+<!-- MODAL RESULTADO -->
+<div id="modalResultado" class="modal">
+    <div class="modal-content resultado-modal">
+        <h3>Resultado da Pesquisa</h3>
+        <div id="conteudoResultado"></div>
+        <button id="fecharResultado">Fechar</button>
+    </div>
+</div>
+
+<!-- MODAL INFORMAÇÃO EXPORTAR -->
+<div id="modalInfoExportar" class="modal">
+    <div class="modal-content info-modal">
+        <h3>Exportar Dados</h3>
+        <p>O arquivo será exportado no formato <strong>PDF</strong>.</p>
+        <p>As palavras serão organizadas em ordem alfabética, com a letra inicial destacada.</p>
+        <button id="confirmarExportar">Exportar PDF</button>
+        <button class="cancelar fecharInfoExportar">Cancelar</button>
+    </div>
+</div>
+
+<!-- MODAL INFORMAÇÃO IMPORTAR -->
+<div id="modalInfoImportar" class="modal">
+    <div class="modal-content info-modal">
+        <h3>Importar Dados</h3>
+        <p>O arquivo deve estar no formato <strong>Excel (.xlsx)</strong>.</p>
+        <p>O arquivo deve conter duas colunas:</p>
+        <ul>
+            <li><strong>Coluna A:</strong> Palavra</li>
+            <li><strong>Coluna B:</strong> Significado</li>
+        </ul>
+        <button id="confirmarImportar">Selecionar Arquivo</button>
+        <button class="cancelar fecharInfoImportar">Cancelar</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
