@@ -33,8 +33,9 @@ body {
     width: 100%;
     height: 100%;
 
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
+    /* SUPORTE TOTAL */
+    -webkit-backdrop-filter: blur(6px); /* Safari e iOS */
+    backdrop-filter: blur(6px);         /* Chrome, Edge, Opera */
 
     background: rgba(0, 0, 0, 0.45);
     display: flex;
@@ -58,15 +59,6 @@ body.dark .login-box {
     color: white;
 }
 
-.login-box h2 {
-    margin-bottom: 15px;
-}
-
-.login-info {
-    margin-bottom: 15px;
-    font-size: 14px;
-}
-
 .login-buttons {
     display: flex;
     justify-content: space-between;
@@ -81,20 +73,10 @@ body.dark .login-box {
     cursor: pointer;
     font-size: 15px;
     color: white;
-    transition: 0.2s;
 }
 
-.login-btn.aluno {
-    background: #0077cc;
-}
-
-.login-btn.professor {
-    background: #28a745;
-}
-
-.login-btn:hover {
-    opacity: 0.85;
-}
+.login-btn.aluno { background: #0077cc; }
+.login-btn.professor { background: #28a745; }
 
 #formLogin {
     display: flex;
@@ -106,26 +88,8 @@ body.dark .login-box {
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    background: white;
-    color: #222;
 }
 
-body.dark #formLogin input {
-    background: #444;
-    border: 1px solid #666;
-    color: white;
-}
-
-.login-observacao {
-    font-size: 12px;
-    color: #555;
-}
-
-body.dark .login-observacao {
-    color: #ccc;
-}
-
-/* NOVO: link "Esqueci minha senha" */
 .link-esqueci {
     background: none;
     border: none;
@@ -133,29 +97,10 @@ body.dark .login-observacao {
     cursor: pointer;
     font-size: 14px;
     text-decoration: underline;
-    padding: 0;
 }
 
 body.dark .link-esqueci {
     color: #66aaff;
-}
-
-.login-confirmar {
-    background: #28a745;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.login-cancelar {
-    background: #dc3545;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
 }
 
 /* ========================= */
@@ -169,10 +114,6 @@ header {
     text-align: center;
 }
 
-body.dark header {
-    background: #111;
-}
-
 .menu-flex {
     display: flex;
     justify-content: center;
@@ -182,10 +123,6 @@ body.dark header {
     flex-wrap: wrap;
 }
 
-body.dark .menu-flex {
-    background: #222;
-}
-
 .menu-flex button {
     padding: 10px 15px;
     border: none;
@@ -193,36 +130,14 @@ body.dark .menu-flex {
     color: white;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.2s;
-}
-
-body.dark .menu-flex button {
-    background: #555;
-}
-
-.menu-flex button:hover {
-    background: #555;
-}
-
-body.dark .menu-flex button:hover {
-    background: #666;
 }
 
 /* ========================= */
-/*   MENU SENHA (ENGRENAGEM) */
+/*   MENU SENHA              */
 /* ========================= */
 
 .menu-senha {
     position: relative;
-    z-index: 2000;
-}
-
-.menu-senha button {
-    background: #666;
-}
-
-body.dark .menu-senha button {
-    background: #555;
 }
 
 .submenu-senha {
@@ -233,13 +148,8 @@ body.dark .menu-senha button {
     border-radius: 6px;
     box-shadow: 0 0 8px rgba(0,0,0,0.2);
     overflow: hidden;
-    z-index: 3000;
     min-width: 160px;
-}
-
-body.dark .submenu-senha {
-    background: #2b2b2b;
-    box-shadow: 0 0 8px rgba(255,255,255,0.1);
+    z-index: 3000;
 }
 
 .submenu-senha button {
@@ -249,20 +159,6 @@ body.dark .submenu-senha {
     background: transparent;
     text-align: left;
     cursor: pointer;
-    color: #222;
-    font-size: 14px;
-}
-
-body.dark .submenu-senha button {
-    color: white;
-}
-
-.submenu-senha button:hover {
-    background: #e6e6e6;
-}
-
-body.dark .submenu-senha button:hover {
-    background: #444;
 }
 
 /* ========================= */
@@ -281,29 +177,18 @@ body.dark .submenu-senha button:hover {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    width: calc(33% - 20px);
-    min-width: 260px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    color: #222;
-}
 
-body.dark .card {
-    background: #333;
-    color: white;
+    /* RESPONSIVIDADE REAL */
+    width: calc(33% - 20px);
+    min-width: 0;
+
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 .card form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    background: white;
-    color: #222;
-}
-
-body.dark .card form input {
-    background: #444;
-    border: 1px solid #666;
-    color: white;
 }
 
 .card form button {
@@ -313,11 +198,6 @@ body.dark .card form input {
     color: white;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
-}
-
-.card form button:hover {
-    background: #005fa3;
 }
 
 /* ========================= */
@@ -336,12 +216,6 @@ body.dark .card form input {
     background: #eee;
     margin-bottom: 5px;
     border-radius: 6px;
-    color: #222;
-}
-
-body.dark #listaPalavras li {
-    background: #444;
-    color: white;
 }
 
 .btn-excluir {
@@ -350,11 +224,6 @@ body.dark #listaPalavras li {
     color: white;
     padding: 5px 10px;
     border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-excluir:hover {
-    background: #b52a38;
 }
 
 /* ========================= */
@@ -380,49 +249,6 @@ body.dark #listaPalavras li {
     width: 350px;
     border-radius: 10px;
     text-align: center;
-    color: #222;
-}
-
-body.dark .modal-content {
-    background: #2b2b2b;
-    color: white;
-}
-
-#modalSenha .modal-content {
-    width: 380px;
-}
-
-#modalSenha input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-body.dark #modalSenha input {
-    background: #444;
-    border: 1px solid #666;
-    color: white;
-}
-
-.modal-content button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.cancelar {
-    background: #dc3545;
-    color: white;
-}
-
-.cancelar:hover {
-    background: #b52a38;
 }
 
 /* ========================= */
@@ -439,19 +265,6 @@ body.dark #modalSenha input {
     border-radius: 50%;
     cursor: pointer;
     display: none;
-}
-
-#topo:hover {
-    background: #005fa3;
-}
-
-/* ========================= */
-/*   MODO ESCURO             */
-/* ========================= */
-
-body.dark {
-    background: #222;
-    color: white;
 }
 
 /* ========================= */
@@ -474,21 +287,14 @@ body.dark {
     }
 
     .card {
-        width: 90%;
-        min-width: unset;
+        width: 95%;
     }
 }
 
 @media (max-width: 700px) {
-    .menu-flex {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
     .menu-flex button,
     .menu-senha button {
         width: 100%;
-        text-align: center;
     }
 
     .submenu-senha {
@@ -504,20 +310,8 @@ body.dark {
         padding: 15px;
     }
 
-    #modalSenha .modal-content {
-        width: 90% !important;
-    }
-
     input, button {
         font-size: 16px;
-    }
-}
-
-@media (max-width: 600px) {
-    #topo {
-        bottom: 15px;
-        right: 15px;
-        padding: 10px;
     }
 }
 
