@@ -179,6 +179,7 @@ body.dark header {
     gap: 10px;
     background: #444;
     padding: 10px;
+    flex-wrap: wrap;
 }
 
 body.dark .menu-flex {
@@ -460,4 +461,78 @@ body.dark {
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
+}
+
+/* ========================= */
+/*   RESPONSIVIDADE          */
+/* ========================= */
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 700px) {
+    .menu-flex {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .menu-flex button,
+    .menu-senha button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .submenu-senha {
+        position: static;
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        width: 90% !important;
+        padding: 15px;
+    }
+
+    #modalSenha .modal-content {
+        width: 90% !important;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    #topo {
+        bottom: 15px;
+        right: 15px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 450px) {
+    .login-box {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .login-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .login-btn {
+        width: 100%;
+    }
 }
