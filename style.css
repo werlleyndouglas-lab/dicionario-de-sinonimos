@@ -1,302 +1,463 @@
-/* =========================
-   GLOBAL
-========================= */
+/* ========================= */
+/*   RESET BÁSICO            */
+/* ========================= */
+
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #071326, #0a1a33);
-    color: #e6ecf5;
-    transition: background 0.4s, color 0.4s;
+    background: #f4f4f4;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* Oculta input de importação */
+.hidden {
+    display: none !important;
+}
+
 .hidden-input {
-    display: none;
+    display: none !important;
 }
 
-/* Oculta botão Resetar Senha */
-.hidden-reset {
-    display: none;
+/* ========================= */
+/*   TELA DE LOGIN           */
+/* ========================= */
+
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
-/* Acessibilidade: label invisível mas lido por leitores de tela */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
+.login-box {
+    background: white;
+    padding: 25px;
+    width: 350px;
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+    color: #222;
+}
+
+body.dark .login-box {
+    background: #2b2b2b;
+    color: white;
+}
+
+.login-box h2 {
+    margin-bottom: 15px;
+}
+
+.login-info {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.login-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.login-btn {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+    transition: 0.2s;
+}
+
+.login-btn.aluno {
+    background: #0077cc;
+}
+
+.login-btn.professor {
+    background: #28a745;
+}
+
+.login-btn:hover {
+    opacity: 0.85;
+}
+
+#formLogin {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#formLogin input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: white;
+    color: #222;
+}
+
+body.dark #formLogin input {
+    background: #444;
+    border: 1px solid #666;
+    color: white;
+}
+
+.login-observacao {
+    font-size: 12px;
+    color: #555;
+}
+
+body.dark .login-observacao {
+    color: #ccc;
+}
+
+/* NOVO: link "Esqueci minha senha" */
+.link-esqueci {
+    background: none;
+    border: none;
+    color: #0077cc;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
     padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }
 
-/* =========================
-   MODO ESCURO REAL
-========================= */
-body.dark {
-    background: #0b0b0b;
-    color: #e0e0e0;
+body.dark .link-esqueci {
+    color: #66aaff;
+}
+
+.login-confirmar {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.login-cancelar {
+    background: #dc3545;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ========================= */
+/*   HEADER E MENU           */
+/* ========================= */
+
+header {
+    background: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
 }
 
 body.dark header {
     background: #111;
-    color: #eee;
 }
 
-body.dark .card {
-    background: #1a1a1a;
-}
-
-body.dark .menu-flex {
-    background: #111;
-}
-
-body.dark .menu-flex button {
-    background: #222;
-    color: #ddd;
-}
-
-body.dark .menu-flex button:hover {
-    background: #333;
-}
-
-body.dark input {
-    background: #1c1c1c;
-    border-color: #444;
-    color: #eee;
-}
-
-body.dark input:focus {
-    border-color: #888;
-}
-
-body.dark button {
-    background: #222;
-    color: #eee;
-}
-
-body.dark button:hover {
-    background: #333;
-}
-
-body.dark #listaPalavras li {
-    background: #1c1c1c;
-    border-left: 4px solid #666;
-}
-
-body.dark .btn-excluir {
-    color: #aaa;
-}
-
-body.dark .btn-excluir:hover {
-    color: #ff4d4d;
-}
-
-body.dark .btn-excluir:hover::after {
-    color: #ccc;
-}
-
-body.dark .modal-content {
-    background: #1a1a1a;
-    color: #eee;
-}
-
-body.dark .resultado-modal {
-    border-left: 5px solid #888;
-}
-
-body.dark #topo {
-    background: #222;
-}
-
-/* =========================
-   HEADER
-========================= */
-header {
-    background: #071326;
-    padding: 25px;
-    text-align: center;
-    color: white;
-}
-
-/* =========================
-   MENU FLEXBOX
-========================= */
 .menu-flex {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    padding: 15px;
-    background: #0d1f3a;
+    gap: 10px;
+    background: #444;
+    padding: 10px;
+}
+
+body.dark .menu-flex {
+    background: #222;
 }
 
 .menu-flex button {
-    background: #1e3f73;
-    color: white;
+    padding: 10px 15px;
     border: none;
-    padding: 10px 16px;
+    background: #666;
+    color: white;
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.menu-flex button:hover {
-    background: #29508f;
-    transform: translateY(-3px);
+body.dark .menu-flex button {
+    background: #555;
 }
 
-/* =========================
-   CARDS
-========================= */
+.menu-flex button:hover {
+    background: #555;
+}
+
+body.dark .menu-flex button:hover {
+    background: #666;
+}
+
+/* ========================= */
+/*   MENU SENHA (ENGRENAGEM) */
+/* ========================= */
+
+.menu-senha {
+    position: relative;
+    z-index: 2000;
+}
+
+.menu-senha button {
+    background: #666;
+}
+
+body.dark .menu-senha button {
+    background: #555;
+}
+
+.submenu-senha {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+    z-index: 3000;
+    min-width: 160px;
+}
+
+body.dark .submenu-senha {
+    background: #2b2b2b;
+    box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
+.submenu-senha button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: #222;
+    font-size: 14px;
+}
+
+body.dark .submenu-senha button {
+    color: white;
+}
+
+.submenu-senha button:hover {
+    background: #e6e6e6;
+}
+
+body.dark .submenu-senha button:hover {
+    background: #444;
+}
+
+/* ========================= */
+/*   CONTEÚDO PRINCIPAL      */
+/* ========================= */
+
 .container {
+    max-width: 900px;
+    margin: 20px auto;
     display: flex;
+    gap: 20px;
     flex-wrap: wrap;
-    gap: 25px;
-    padding: 30px;
-    justify-content: center;
 }
 
 .card {
-    background: #11284d;
-    padding: 20px;
-    width: 300px;
-    border-radius: 12px;
-}
-
-/* =========================
-   INPUTS
-========================= */
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid #3b5c8e;
-    background: #0d1f3a;
-    color: white;
-}
-
-/* =========================
-   BOTÕES
-========================= */
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1e3f73;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* =========================
-   LISTA DE PALAVRAS
-========================= */
-#listaPalavras {
-    list-style: none;
-    padding: 0;
-}
-
-#listaPalavras li {
-    background: #0d1f3a;
-    padding: 8px 12px;
-    margin: 6px 0;
-    border-radius: 6px;
-    border-left: 4px solid #4a8cff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* BOTÃO X AJUSTADO */
-.btn-excluir {
-    background: transparent;
-    border: none;
-    color: #ccc;
-    font-size: 16px;
-    cursor: pointer;
-    width: 22px;
-    text-align: center;
-    margin-left: 12px;
-    position: relative;
-}
-
-.btn-excluir:hover {
-    color: red;
-}
-
-.btn-excluir:hover::after {
-    content: "Excluir";
-    position: absolute;
-    right: 28px;
-    top: 0;
-    color: #ccc;
-    font-size: 12px;
-}
-
-/* =========================
-   MODAIS
-========================= */
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: #11284d;
+    background: white;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: calc(33% - 20px);
+    min-width: 260px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    color: #222;
 }
 
-.resultado-modal {
-    border-left: 5px solid #4a8cff;
+body.dark .card {
+    background: #333;
+    color: white;
 }
 
-/* MODAIS DE INFORMAÇÃO */
-.info-modal {
-    background: #11284d;
-    border-left: 5px solid #4a8cff;
+.card form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: white;
+    color: #222;
 }
 
-body.dark .info-modal {
-    background: #1a1a1a;
-    border-left: 5px solid #888;
+body.dark .card form input {
+    background: #444;
+    border: 1px solid #666;
+    color: white;
 }
 
-.info-modal h3 {
-    margin-top: 0;
-    text-align: center;
+.card form button {
+    width: 100%;
+    padding: 10px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.info-modal ul {
-    margin-left: 20px;
+.card form button:hover {
+    background: #005fa3;
 }
 
-.info-modal button {
+/* ========================= */
+/*   LISTA DE PALAVRAS       */
+/* ========================= */
+
+#listaPalavras {
+    list-style: none;
     margin-top: 10px;
 }
 
-/* =========================
-   BOTÃO VOLTAR AO TOPO
-========================= */
+#listaPalavras li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: #eee;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    color: #222;
+}
+
+body.dark #listaPalavras li {
+    background: #444;
+    color: white;
+}
+
+.btn-excluir {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-excluir:hover {
+    background: #b52a38;
+}
+
+/* ========================= */
+/*   MODAIS                  */
+/* ========================= */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 350px;
+    border-radius: 10px;
+    text-align: center;
+    color: #222;
+}
+
+body.dark .modal-content {
+    background: #2b2b2b;
+    color: white;
+}
+
+#modalSenha .modal-content {
+    width: 380px;
+}
+
+#modalSenha input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+body.dark #modalSenha input {
+    background: #444;
+    border: 1px solid #666;
+    color: white;
+}
+
+.modal-content button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancelar {
+    background: #dc3545;
+    color: white;
+}
+
+.cancelar:hover {
+    background: #b52a38;
+}
+
+/* ========================= */
+/*   BOTÃO VOLTAR AO TOPO    */
+/* ========================= */
+
 #topo {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #1e3f73;
-    padding: 14px;
+    background: #0077cc;
+    color: white;
+    padding: 12px;
     border-radius: 50%;
     cursor: pointer;
+    display: none;
+}
+
+#topo:hover {
+    background: #005fa3;
+}
+
+/* ========================= */
+/*   MODO ESCURO             */
+/* ========================= */
+
+body.dark {
+    background: #222;
     color: white;
+}
+
+/* ========================= */
+/*   ANIMAÇÕES               */
+/* ========================= */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
