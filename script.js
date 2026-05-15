@@ -3,18 +3,38 @@
 // =========================
 
 let dicionario = new Map(JSON.parse(localStorage.getItem("dicionario")) || []);
-let adminSenha = localStorage.getItem("adminSenha");
+let usuarioTipo = null;
+let usuarioAtual = null;
 
 const listaPalavras = document.getElementById("listaPalavras");
 const contador = document.getElementById("contadorPalavras");
 
-// Modais
-const modalSenha = document.getElementById("modalSenha");
-const inputSenha = document.getElementById("inputSenha");
-const confirmarSenha = document.getElementById("confirmarSenha");
-const resetarSenha = document.getElementById("resetarSenha");
-const fecharSenha = document.querySelector(".fecharSenha");
+// =========================
+//   ELEMENTOS DA INTERFACE
+// =========================
 
+// Tela de login
+const telaLogin = document.getElementById("telaLogin");
+const btnLoginAluno = document.getElementById("btnLoginAluno");
+const btnLoginProfessor = document.getElementById("btnLoginProfessor");
+const formLogin = document.getElementById("formLogin");
+const tituloLogin = document.getElementById("tituloLogin");
+const cancelarLogin = document.getElementById("cancelarLogin");
+const btnEsqueciSenha = document.getElementById("btnEsqueciSenha");
+
+// Menu
+const btnExportar = document.getElementById("btnExportar");
+const btnImportar = document.getElementById("btnImportar");
+const btnModoEscuro = document.getElementById("btnModoEscuro");
+const btnSenha = document.getElementById("btnSenha");
+const btnLogoff = document.getElementById("btnLogoff");
+
+// Submenus
+const submenuSenha = document.querySelector(".submenu-senha");
+const submenuAlterar = document.getElementById("submenuAlterar");
+const submenuRedefinir = document.getElementById("submenuRedefinir");
+
+// Modais
 const modalResultado = document.getElementById("modalResultado");
 const conteudoResultado = document.getElementById("conteudoResultado");
 const fecharResultado = document.getElementById("fecharResultado");
@@ -25,8 +45,13 @@ const modalInfoImportar = document.getElementById("modalInfoImportar");
 const confirmarExportar = document.getElementById("confirmarExportar");
 const confirmarImportar = document.getElementById("confirmarImportar");
 
-let acaoSenha = null;
-let palavraAlvo = null;
+const modalSenha = document.getElementById("modalSenha");
+const senhaTitulo = document.getElementById("senhaTitulo");
+const senhaFormulario = document.getElementById("senhaFormulario");
+const senhaConfirmar = document.getElementById("senhaConfirmar");
+
+const modalLogoff = document.getElementById("modalLogoff");
+const confirmarLogoff = document.getElementById("confirmarLogoff");
 
 // =========================
 //   FUNÇÕES AUXILIARES
@@ -44,68 +69,6 @@ function atualizarContador() {
     contador.textContent = `Total de palavras: ${dicionario.size}`;
 }
 
-function abrirModalSenha(acao, palavra = null) {
-    acaoSenha = acao;
-    palavraAlvo = palavra;
-    inputSenha.value = "";
-
-    if (acao === "redefinir") {
-        confirmarSenha.textContent = "Redefinir Senha";
-        resetarSenha.classList.remove("hidden-reset");
-    } else {
-        confirmarSenha.textContent = "Confirmar";
-        resetarSenha.classList.add("hidden-reset");
-    }
-
-    modalSenha.style.display = "flex";
-}
-
-function fecharModalSenha() {
-    modalSenha.style.display = "none";
-}
-
-// =========================
-//   FECHAR MODAL SENHA (CORREÇÃO)
-// =========================
-
-fecharSenha.addEventListener("click", fecharModalSenha);
-
-// =========================
-//   VALIDAÇÃO DE SENHA
-// =========================
-
-function validarSenha() {
-    const senha = inputSenha.value.trim();
-
-    if (senha.length === 0) {
-        alert("Digite uma senha.");
-        return false;
-    }
-
-    if (!adminSenha) {
-        if (senha.length < 3) {
-            alert("A senha deve ter pelo menos 3 caracteres.");
-            return false;
-        }
-
-        adminSenha = senha;
-        localStorage.setItem("adminSenha", adminSenha);
-        alert("Senha criada com sucesso!");
-        return true;
-    }
-
-    if (senha === adminSenha) {
-        return true;
-    }
-
-    alert("Senha incorreta.");
-    return false;
-}
-
-// =========================
-//   LISTA DE PALAVRAS
-// =========================
-
 function atualizarLista() {
     listaPalavras.innerHTML = "";
 
@@ -114,7 +77,7 @@ function atualizarLista() {
 
         li.innerHTML = `
             <span class="palavra-item">${capitalizar(chave)}</span>
-            <button class="btn-excluir">×</button>
+            ${usuarioTipo === "professor" ? `<button class="btn-excluir">×</button>` : ""}
         `;
 
         li.querySelector(".palavra-item").addEventListener("click", () => {
@@ -122,9 +85,13 @@ function atualizarLista() {
             document.getElementById("formBusca").dispatchEvent(new Event("submit"));
         });
 
-        li.querySelector(".btn-excluir").addEventListener("click", () => {
-            abrirModalSenha("excluir", chave);
-        });
+        if (usuarioTipo === "professor") {
+            li.querySelector(".btn-excluir").addEventListener("click", () => {
+                dicionario.delete(chave);
+                salvarLocalStorage();
+                atualizarLista();
+            });
+        }
 
         listaPalavras.appendChild(li);
     });
@@ -132,13 +99,201 @@ function atualizarLista() {
     atualizarContador();
 }
 
+function aplicarPermissoes() {
+    const cardCadastro = document.getElementById("cardCadastro");
+
+    if (usuarioTipo === "aluno") {
+        cardCadastro.style.display = "none";
+        btnImportar.style.display = "none";
+    } else {
+        cardCadastro.style.display = "block";
+        btnImportar.style.display = "inline-block";
+    }
+
+    btnLogoff.classList.remove("hidden");
+}
+
 // =========================
-//   CADASTRO
+//   SISTEMA DE SENHAS
 // =========================
 
-document.getElementById("formCadastro").addEventListener("submit", (e) => {
+function garantirSenhaPadrao(matricula) {
+    if (!localStorage.getItem("senha_" + matricula)) {
+        localStorage.setItem("senha_" + matricula, "1234");
+    }
+}
+
+function validarSenha(matricula, senhaDigitada) {
+    const senhaSalva = localStorage.getItem("senha_" + matricula);
+    return senhaDigitada === senhaSalva;
+}
+
+// =========================
+//   LOGIN
+// =========================
+
+btnLoginAluno.addEventListener("click", () => {
+    usuarioTipo = "aluno";
+    tituloLogin.textContent = "Login de Aluno";
+    formLogin.classList.remove("hidden");
+});
+
+btnLoginProfessor.addEventListener("click", () => {
+    usuarioTipo = "professor";
+    tituloLogin.textContent = "Login de Professor";
+    formLogin.classList.remove("hidden");
+});
+
+cancelarLogin.addEventListener("click", () => {
+    formLogin.classList.add("hidden");
+    usuarioTipo = null;
+});
+
+formLogin.addEventListener("submit", (e) => {
     e.preventDefault();
-    abrirModalSenha("cadastrar");
+
+    const matricula = document.getElementById("loginMatricula").value.trim();
+    const senha = document.getElementById("loginSenha").value.trim();
+
+    usuarioAtual = matricula;
+
+    garantirSenhaPadrao(matricula);
+
+    if (!validarSenha(matricula, senha)) {
+        alert("Senha incorreta.");
+        return;
+    }
+
+    telaLogin.style.display = "none";
+    aplicarPermissoes();
+    atualizarLista();
+});
+
+// =========================
+//   ESQUECI MINHA SENHA
+// =========================
+
+btnEsqueciSenha.addEventListener("click", () => {
+    const matricula = document.getElementById("loginMatricula").value.trim();
+
+    if (matricula === "") {
+        alert("Digite sua matrícula antes de solicitar a redefinição.");
+        return;
+    }
+
+    garantirSenhaPadrao(matricula);
+
+    const novaSenha = "12345@";
+
+    localStorage.setItem("senha_" + matricula, novaSenha);
+
+    alert(
+        "Um e-mail foi enviado com instruções para redefinir sua senha.\n\n" +
+        "(Versão de teste: nova senha gerada = " + novaSenha + ")"
+    );
+});
+
+// =========================
+//   MENU SENHA
+// =========================
+
+btnSenha.addEventListener("click", () => {
+    submenuSenha.classList.toggle("hidden");
+});
+
+document.addEventListener("click", (e) => {
+    if (!btnSenha.contains(e.target) && !submenuSenha.contains(e.target)) {
+        submenuSenha.classList.add("hidden");
+    }
+});
+
+// =========================
+//   ALTERAR SENHA
+// =========================
+
+submenuAlterar.addEventListener("click", () => {
+    submenuSenha.classList.add("hidden");
+
+    senhaTitulo.textContent = "Alterar Senha";
+
+    senhaFormulario.innerHTML = `
+        <label>Senha atual</label>
+        <input type="password" id="senhaAtual">
+
+        <label>Nova senha</label>
+        <input type="password" id="senhaNova">
+
+        <label>Confirmar nova senha</label>
+        <input type="password" id="senhaConfirmarNova">
+    `;
+
+    senhaConfirmar.textContent = "Alterar Senha";
+
+    senhaConfirmar.onclick = () => {
+        const atual = document.getElementById("senhaAtual").value;
+        const nova = document.getElementById("senhaNova").value;
+        const confirmar = document.getElementById("senhaConfirmarNova").value;
+
+        const senhaSalva = localStorage.getItem("senha_" + usuarioAtual);
+
+        if (atual !== senhaSalva) {
+            alert("Senha atual incorreta.");
+            return;
+        }
+
+        if (nova !== confirmar) {
+            alert("A confirmação não corresponde.");
+            return;
+        }
+
+        localStorage.setItem("senha_" + usuarioAtual, nova);
+        alert("Senha alterada com sucesso!");
+        modalSenha.style.display = "none";
+    };
+
+    modalSenha.style.display = "flex";
+});
+
+// =========================
+//   REDEFINIR SENHA (MENU)
+// =========================
+
+submenuRedefinir.addEventListener("click", () => {
+    submenuSenha.classList.add("hidden");
+
+    senhaTitulo.textContent = "Redefinir Senha";
+
+    senhaFormulario.innerHTML = `
+        <label>E-mail cadastrado</label>
+        <input type="email" id="emailRedefinir">
+    `;
+
+    senhaConfirmar.textContent = "Enviar redefinição";
+
+    senhaConfirmar.onclick = () => {
+        const email = document.getElementById("emailRedefinir").value;
+
+        if (email.trim() === "") {
+            alert("Digite um e-mail válido.");
+            return;
+        }
+
+        const novaSenha = "12345@";
+        localStorage.setItem("senha_" + usuarioAtual, novaSenha);
+
+        alert(
+            "Um e-mail foi enviado com instruções para redefinir sua senha.\n\n" +
+            "(Senha gerada na versão de teste: " + novaSenha + ")"
+        );
+
+        modalSenha.style.display = "none";
+    };
+
+    modalSenha.style.display = "flex";
+});
+
+document.querySelectorAll(".fecharSenha").forEach(btn => {
+    btn.addEventListener("click", () => modalSenha.style.display = "none");
 });
 
 // =========================
@@ -167,81 +322,26 @@ fecharResultado.addEventListener("click", () => {
 });
 
 // =========================
-//   CONFIRMAR SENHA
+//   CADASTRO
 // =========================
 
-confirmarSenha.addEventListener("click", () => {
-    if (!validarSenha()) return;
+document.getElementById("formCadastro").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-    if (acaoSenha === "cadastrar") {
-        let palavra = document.getElementById("palavra").value.trim().toLowerCase();
-        let definicao = document.getElementById("definicao").value.trim();
+    let palavra = document.getElementById("palavra").value.trim().toLowerCase();
+    let definicao = document.getElementById("definicao").value.trim();
 
-        dicionario.set(palavra, definicao);
-        salvarLocalStorage();
-        atualizarLista();
-        document.getElementById("formCadastro").reset();
-    }
-
-    if (acaoSenha === "excluir") {
-        dicionario.delete(palavraAlvo);
-        salvarLocalStorage();
-        atualizarLista();
-    }
-
-    if (acaoSenha === "redefinir") {
-        let novaSenha = prompt("Digite a nova senha:");
-
-        if (!novaSenha || novaSenha.trim().length < 3) {
-            alert("A nova senha deve ter pelo menos 3 caracteres.");
-            return;
-        }
-
-        adminSenha = novaSenha.trim();
-        localStorage.setItem("adminSenha", adminSenha);
-        alert("Senha redefinida com sucesso!");
-    }
-
-    fecharModalSenha();
-});
-
-// =========================
-//   RESETAR SENHA (SEM VALIDAR)
-// =========================
-
-resetarSenha.addEventListener("click", () => {
-
-    alert("⚠ Esta ação está liberada sem senha apenas porque esta é uma versão de TESTE, caso contrário, um e-mail com orientações seria enviado a você.");
-
-    adminSenha = null;
-    localStorage.removeItem("adminSenha");
-
-    alert("Senha resetada! Uma nova senha será solicitada na próxima operação protegida.");
-
-    fecharModalSenha();
-});
-
-// =========================
-//   MODO ESCURO
-// =========================
-
-const btnModoEscuro = document.getElementById("btnModoEscuro");
-
-btnModoEscuro.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    if (document.body.classList.contains("dark")) {
-        btnModoEscuro.innerHTML = '<i class="fa-solid fa-sun"></i> Sair do Modo Escuro';
-    } else {
-        btnModoEscuro.innerHTML = '<i class="fa-solid fa-moon"></i> Modo Escuro';
-    }
+    dicionario.set(palavra, definicao);
+    salvarLocalStorage();
+    atualizarLista();
+    document.getElementById("formCadastro").reset();
 });
 
 // =========================
 //   EXPORTAR PDF
 // =========================
 
-document.getElementById("btnExportar").addEventListener("click", () => {
+btnExportar.addEventListener("click", () => {
     modalInfoExportar.style.display = "flex";
 });
 
@@ -292,7 +392,7 @@ confirmarExportar.addEventListener("click", () => {
 //   IMPORTAR EXCEL
 // =========================
 
-document.getElementById("btnImportar").addEventListener("click", () => {
+btnImportar.addEventListener("click", () => {
     modalInfoImportar.style.display = "flex";
 });
 
@@ -332,11 +432,39 @@ document.getElementById("inputImportar").addEventListener("change", function () 
 });
 
 // =========================
-//   REDEFINIR SENHA
+//   MODO ESCURO
 // =========================
 
-document.getElementById("btnRedefinirSenha").addEventListener("click", () => {
-    abrirModalSenha("redefinir");
+btnModoEscuro.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        btnModoEscuro.innerHTML = '<i class="fa-solid fa-sun"></i> Sair do Modo Escuro';
+    } else {
+        btnModoEscuro.innerHTML = '<i class="fa-solid fa-moon"></i> Modo Escuro';
+    }
+});
+
+// =========================
+//   LOGOFF
+// =========================
+
+btnLogoff.addEventListener("click", () => {
+    modalLogoff.style.display = "flex";
+});
+
+document.querySelectorAll(".fecharLogoff").forEach(btn => {
+    btn.addEventListener("click", () => modalLogoff.style.display = "none");
+});
+
+confirmarLogoff.addEventListener("click", () => {
+    modalLogoff.style.display = "none";
+    telaLogin.style.display = "flex";
+    formLogin.classList.add("hidden");
+    usuarioTipo = null;
+    usuarioAtual = null;
+    btnLogoff.classList.add("hidden");
+    atualizarLista();
 });
 
 // =========================
