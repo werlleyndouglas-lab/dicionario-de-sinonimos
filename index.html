@@ -15,25 +15,90 @@
 </head>
 <body>
 
+<!-- ========================= -->
+<!--   TELA DE LOGIN           -->
+<!-- ========================= -->
+<div id="telaLogin" class="login-overlay">
+    <div class="login-box">
+        <h2><i class="fa-solid fa-user-lock"></i> Acesso ao Sistema</h2>
+
+        <p class="login-info">
+            Escolha seu perfil para continuar:
+        </p>
+
+        <div class="login-buttons">
+            <button id="btnLoginAluno" class="login-btn aluno">
+                <i class="fa-solid fa-user-graduate"></i> Sou Aluno
+            </button>
+
+            <button id="btnLoginProfessor" class="login-btn professor">
+                <i class="fa-solid fa-chalkboard-user"></i> Sou Professor
+            </button>
+        </div>
+
+        <form id="formLogin" class="hidden">
+            <h3 id="tituloLogin"></h3>
+
+            <label for="loginMatricula">Matrícula</label>
+            <input type="text" id="loginMatricula" placeholder="Digite sua matrícula" required>
+
+            <label for="loginSenha">Senha</label>
+            <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+
+            <p class="login-esqueci">
+                <button type="button" id="btnEsqueciSenha" class="link-esqueci">Esqueci minha senha</button>
+            </p>
+
+            <p class="login-observacao">
+                * Versão de teste — qualquer informação será aceita.
+            </p>
+
+            <button type="submit" class="login-confirmar">Entrar</button>
+            <button type="button" id="cancelarLogin" class="login-cancelar">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<!-- ========================= -->
+<!--   CONTEÚDO PRINCIPAL      -->
+<!-- ========================= -->
+
 <header>
     <h1><i class="fa-solid fa-book"></i> Dicionário de Sinônimos</h1>
 </header>
 
-<!-- MENU FLEXBOX CENTRALIZADO -->
 <nav class="menu-flex">
+
     <button id="btnExportar"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
     <button id="btnImportar"><i class="fa-solid fa-file-excel"></i> Importar Excel</button>
+
+    <!-- MENU SENHA -->
+    <div class="menu-senha">
+        <button id="btnSenha" aria-label="Menu de senha">
+            <i class="fa-solid fa-gear"></i> Senha
+        </button>
+
+        <div class="submenu-senha hidden">
+            <button id="submenuAlterar">Alterar Senha</button>
+            <button id="submenuRedefinir">Redefinir Senha</button>
+        </div>
+    </div>
+
     <button id="btnModoEscuro"><i class="fa-solid fa-moon"></i> Modo Escuro</button>
-    <button id="btnRedefinirSenha"><i class="fa-solid fa-key"></i> Redefinir Senha</button>
+    <button id="btnLogoff" class="hidden"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
 </nav>
 
 <main class="container">
 
-    <section class="card">
+    <section class="card" id="cardCadastro">
         <h2><i class="fa-solid fa-plus"></i> Cadastrar Palavra</h2>
         <form id="formCadastro">
-            <input type="text" id="palavra" placeholder="Palavra" required>
-            <input type="text" id="definicao" placeholder="Significado" required>
+            <label for="palavra">Palavra</label>
+            <input type="text" id="palavra" placeholder="Digite a palavra" required>
+
+            <label for="definicao">Significado</label>
+            <input type="text" id="definicao" placeholder="Digite o significado" required>
+
             <button type="submit">Cadastrar</button>
         </form>
     </section>
@@ -41,6 +106,7 @@
     <section class="card">
         <h2><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Sinônimo</h2>
         <form id="formBusca">
+            <label for="busca">Pesquisar</label>
             <input type="text" id="busca" placeholder="Digite a palavra" required>
             <button type="submit">Buscar</button>
         </form>
@@ -54,28 +120,12 @@
 
 </main>
 
-<div id="topo"><i class="fa-solid fa-arrow-up"></i></div>
+<button id="topo" aria-label="Voltar ao topo">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
 
-<!-- INPUT IMPORTAÇÃO (SEM INLINE STYLE) -->
-<label for="inputImportar" class="sr-only">Importar arquivo Excel</label>
-<input type="file" id="inputImportar" accept=".xlsx" class="hidden-input">
-
-<!-- MODAL SENHA -->
-<div id="modalSenha" class="modal">
-    <div class="modal-content">
-        <h3>Digite a senha de administrador</h3>
-
-        <label for="inputSenha" class="sr-only">Senha</label>
-        <input type="password" id="inputSenha" placeholder="Senha">
-
-        <button id="confirmarSenha">Confirmar</button>
-
-        <!-- BOTÃO RESETAR SENHA (SEM INLINE STYLE) -->
-        <button id="resetarSenha" class="cancelar hidden-reset">Resetar Senha</button>
-
-        <button class="cancelar fecharSenha">Cancelar</button>
-    </div>
-</div>
+<!-- INPUT IMPORTAÇÃO -->
+<input type="file" id="inputImportar" accept=".xlsx" class="hidden-input" aria-label="Selecionar arquivo Excel">
 
 <!-- MODAL RESULTADO -->
 <div id="modalResultado" class="modal">
@@ -86,29 +136,47 @@
     </div>
 </div>
 
-<!-- MODAL INFORMAÇÃO EXPORTAR -->
+<!-- MODAL EXPORTAR -->
 <div id="modalInfoExportar" class="modal">
     <div class="modal-content info-modal">
         <h3>Exportar Dados</h3>
         <p>O arquivo será exportado no formato <strong>PDF</strong>.</p>
-        <p>As palavras serão organizadas em ordem alfabética, com a letra inicial destacada.</p>
+        <p>As palavras serão organizadas em ordem alfabética.</p>
         <button id="confirmarExportar">Exportar PDF</button>
         <button class="cancelar fecharInfoExportar">Cancelar</button>
     </div>
 </div>
 
-<!-- MODAL INFORMAÇÃO IMPORTAR -->
+<!-- MODAL IMPORTAR -->
 <div id="modalInfoImportar" class="modal">
     <div class="modal-content info-modal">
         <h3>Importar Dados</h3>
-        <p>O arquivo deve estar no formato <strong>Excel (.xlsx)</strong>.</p>
-        <p>O arquivo deve conter duas colunas:</p>
+        <p>Selecione um arquivo Excel (.xlsx) com duas colunas:</p>
         <ul>
             <li><strong>Coluna A:</strong> Palavra</li>
             <li><strong>Coluna B:</strong> Significado</li>
         </ul>
         <button id="confirmarImportar">Selecionar Arquivo</button>
         <button class="cancelar fecharInfoImportar">Cancelar</button>
+    </div>
+</div>
+
+<!-- MODAL SENHA (DINÂMICO) -->
+<div id="modalSenha" class="modal">
+    <div class="modal-content" id="senhaConteudo">
+        <h3 id="senhaTitulo"></h3>
+        <div id="senhaFormulario"></div>
+        <button id="senhaConfirmar" aria-label="Confirmar ação"></button>
+        <button class="cancelar fecharSenha">Cancelar</button>
+    </div>
+</div>
+
+<!-- MODAL LOGOFF -->
+<div id="modalLogoff" class="modal">
+    <div class="modal-content">
+        <h3>Deseja realmente sair?</h3>
+        <button id="confirmarLogoff">Sim, sair</button>
+        <button class="cancelar fecharLogoff">Cancelar</button>
     </div>
 </div>
 
